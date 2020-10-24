@@ -6,8 +6,7 @@
     <div class="card">
     <div class="card-header">
       <h3 class="card-title">Take Attendance</h3>
-      <a href="{{ URL::to('all_attendance') }}" class="float-sm-right btn btn-primary">All Attendance</a>
-
+      <a href="{{ URL::to('all_attendance_employee') }}" class="float-sm-right btn btn-primary">All Attendance</a>
     </div>
    @if ($errors->any())
       <div class="alert alert-danger">
@@ -20,7 +19,7 @@
   @endif
     <!-- /.card-header -->
     <div class="card-body">
-      <form role="form" action="{{ URL::to('store_employee_attendance') }}" method="POST">
+      <form role="form" action="{{ URL::to('store_attendance_employee') }}" method="POST">
         @csrf
         <table id="example1" class="table table-bordered table-striped">
           <thead>
@@ -29,8 +28,9 @@
             <th>Name</th>
             <th>Designation</th>
             <th>Image</th>
-            <th>Hourly Att</th>
-            <th>Action</th>
+            {{-- <th>Hourly Att</th> --}}
+            <th>Overtime</th>
+            <th>Attendance</th>
           </tr>
           </thead>
           <tbody>
@@ -56,14 +56,18 @@
               <img src="{{ $val->image }}" style="height: 44px; width: 44px;">
             </td>
 
-            <td>
+            {{-- <td>
               <label for="hourly_attendance">Hourly attendance: </label>
               <input id="hourly_attendance" type="text" name="hourly_attendance" placeholder="If Duty is Hourly.">
-            </td>
+            </td> --}}
 
             <input type="hidden" name="att_date" value="{{ date('d/m/y') }}">
             <input type="hidden" name="att_year" value="{{ date('Y') }}">
             <input type="hidden" name="att_month" value="{{ date('F') }}">
+
+            <td>
+              <input type="text" name="overtime[{{$val->id}}]">
+            </td>
 
             <td>
               <label  for="{{ $val->id }}">Present</label>
@@ -84,6 +88,7 @@
     </div>
     <!-- /.card-body -->
   </div>
+
 @endsection
 
 

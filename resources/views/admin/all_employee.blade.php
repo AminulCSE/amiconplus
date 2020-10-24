@@ -14,6 +14,7 @@
           <th>Name</th>
           <th>Phone</th>
           <th>Email</th>
+          <th>Basic Salary</th>
           <th>Designation</th>
           <th>Address</th>
           <th>Image</th>
@@ -29,6 +30,7 @@
           <td>{{ $val->name }}</td>
           <td>{{ $val->phone }}</td>
           <td>{{ $val->email }}</td>
+          <td>{{ $val->basic_salary }}</td>
           <td>{{ $val->designation }}</td>
           <td>{{ $val->address }}</td>
           <td>
@@ -42,7 +44,13 @@
             <a onclick="return confirm('Are your sure to delete this???')" href="{{ URL::to('delete_employee/'.$val->id) }}" style="padding: 4px;">
               <i class="fas fa-trash"></i>
             </a>
+
+            <a href="{{ URL::to('attendance/'.$val->id) }}"style="padding: 4px;">
+             <i class="fas fa-user-circle"></i>
+            </a>
           </td>
+
+          @php echo NumConvert::word(2545);  @endphp
         </tr>
     @endforeach
         </tbody>

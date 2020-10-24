@@ -33,7 +33,7 @@ class EmployeeController extends Controller
     	$validatedData = $request->validate([
 	        'name' 			=> 'required|max:255',
 	        'phone' 		=> 'required|max:15',
-	        'email' 		=> 'required|unique:employees|max:255',
+	        'email' 		=> 'unique:employees|max:255',
 	        'designation' 	=> 'required|max:255',
 	        'address' 		=> 'required|max:255',
 	        'image'       	=> 'image|mimes:jpeg,png,PNG,JPG,jpg,gif|max:2048',
@@ -44,6 +44,7 @@ class EmployeeController extends Controller
         $employee->name 		= $request->name;
         $employee->phone   		= $request->phone;
         $employee->email        = $request->email;
+        $employee->basic_salary = $request->basic_salary;
         $employee->designation  = $request->designation;
         $employee->address      = $request->address;
         $image                  = $request->file('image');
@@ -78,7 +79,7 @@ class EmployeeController extends Controller
 	        'name' 			=> 'required|max:255',
 	        'phone' 		=> 'required|max:15',
 	        'email' 		=> 'required|max:255',
-	        'designation' 	=> 'required|max:255',
+            'designation'   => 'required|max:255',
 	        'address' 		=> 'required|max:255',
 	        'image'       	=> 'image|mimes:jpeg,png,PNG,JPG,jpg,gif|max:2048',
     	]);
@@ -89,6 +90,7 @@ class EmployeeController extends Controller
     	$data['phone']  	= $request->phone;
     	$data['email']  	= $request->email;
     	$data['designation']= $request->designation;
+        $data['basic_salary']= $request->basic_salary;
     	$data['image']  	= $request->image;
     	$data['address']  	= $request->address;
 
@@ -137,16 +139,43 @@ class EmployeeController extends Controller
     }
 
 
-    public function attendance(){
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// Attendance section
+    public function create_attendance(){
     	$data = DB::table('employees')->get();
 		return view('admin.add_attendacne_employee', compact('data'));
     }
 
 
+    
 
 
     public function att_store(Request $request){
     	$date = $request->att_date;
+
     	$db_date = DB::table('emply_attendances')->where('att_date', $date)->first();
     	if($db_date){
     		$notification = array(
@@ -155,35 +184,62 @@ class EmployeeController extends Controller
         	);
     		return back()->with($notification);
     	}else{
-    	foreach ($request->user_id as $id) {
-    		$data[] = [
-    			'user_id'			=>$id,
-    			'attendance'		=>$request->attendance[$id],
-    			'att_date'			=>$request->att_date,
-    			'att_year'			=>$request->att_year,
-    			'att_month'			=>$request->att_month,
-    			'hourly_attendance'	=>$request->hourly_attendance,
-    			'edit_date'			=>date('d_m_y'),
-    		];
-    	}
-    	$att = DB::table('emply_attendances')->insert($data);
-    	if($att){
-    		$notification = array(
-        	'message'=>'Attendance Inserted Succesfully',
-        	'alert-type'=>'success'
-        	);
-    		return back()->with($notification);
-    	}
+
+    // Friday conditon
+        if(date("l", mktime(0,0,0,10,3,1975))=='Friday'){
+            foreach ($request->user_id as $id) {
+                $data[] = [
+                    'user_id'           =>$id,
+                    'attendance'        =>'Friday',
+                    'overtime'          =>$request->overtime[$id],
+                    'att_date'          =>$request->att_date,
+                    'att_year'          =>$request->att_year,
+                    'att_month'         =>$request->att_month,
+                    'edit_date'         =>date('d_m_y'),
+                ];
+            }
+            $att = DB::table('emply_attendances')->insert($data);
+            if($att){
+                $notification = array(
+                'message'=>'Today is Friday',
+                'alert-type'=>'success'
+                );
+                return back()->with($notification);
+            }
+        }else{
+            foreach ($request->user_id as $id) {
+                $data[] = [
+                    'user_id'           =>$id,
+                    'attendance'        =>$request->attendance[$id],
+                    'overtime'          =>$request->overtime[$id],
+                    'att_date'          =>$request->att_date,
+                    'att_year'          =>$request->att_year,
+                    'att_month'         =>$request->att_month,
+                    'edit_date'         =>date('d_m_y'),
+                ];
+            }
+            $att = DB::table('emply_attendances')->insert($data);
+                if($att){
+                $notification = array(
+                'message'=>'Attendance Inserted Succesfully',
+                'alert-type'=>'success'
+                );
+                return back()->with($notification);
+            }
+        }
+    	
       }
     }
 
 
-    public function all_attendance(){
+    public function all_attendance_employee(){
     	$all_att = DB::table('emply_attendances')->select('edit_date')->groupBy('edit_date')->get();
-    	return view('admin.all_attendance', compact('all_att'));
+        
+        $all_employees = DB::table('employees')->get();
+    	return view('admin.all_attendance', compact('all_att', 'all_employees'));
     }
 
-    public function edit_date($edit_date){
+    public function edit_attendance_employee($edit_date){
     	$date_update = DB::table('emply_attendances')->where('edit_date', $edit_date)->first();
 
 
@@ -199,12 +255,13 @@ class EmployeeController extends Controller
     	foreach ($request->id as $id) {
     		$data = [
     			'attendance'	=>$request->attendance[$id],
-    			'att_date'		=>$request->att_date,
-    			'att_year'		=>$request->att_year,
-    			'att_month'		=>$request->att_month,
+                'overtime'      =>$request->overtime[$id],
+    			'att_date'		=>$request->att_date[$id],
+    			'att_year'		=>$request->att_year[$id],
+    			'att_month'		=>$request->att_month[$id]
     		];
 
-    		$attendance_up = EmplyAttendance::where(['att_date'=>$request->att_date, 'id'=>$id])->first();
+    		$attendance_up = EmplyAttendance::where(['id'=>$id])->first();
     		$attendance_up->update($data);
     	}
     	if ($attendance_up) {
@@ -221,5 +278,39 @@ class EmployeeController extends Controller
 	    	return back()->with($notification); 
     	}
     	
+    }
+
+
+
+
+    // Attendanc ereport employee
+    // public function attendance_report_emply($id){
+    //     $val   = DB::table('employees')
+    //             ->join('emply_attendances', 'employees.id', 'emply_attendances.user_id')
+    //             ->select('emply_attendances.attendance', 'emply_attendances.att_month', 'employees.*')
+    //             ->where('emply_attendances.user_id', $id)
+    //             // ->where('attendance', 'Present')
+    //             ->first();
+
+    //     $att_status   = DB::table('emply_attendances')
+    //                     ->where('user_id', $id)
+    //                     ->get();
+    //     return view('admin.attendance_report_emply', compact('val', 'att_status'));
+    // }
+
+
+    // Attendanc ereport monthly with Emplyee name
+    public function monthly_attendance_report_employee(Request $request){
+        $att_month  = $request->att_month;
+        $user_id    = $request->user_id;
+
+        $data   = DB::table('employees')
+                ->join('emply_attendances', 'employees.id', 'emply_attendances.user_id')
+                ->select('emply_attendances.*', 'employees.*')
+                ->where('emply_attendances.user_id', $user_id)
+                ->where('emply_attendances.att_month', $att_month)
+                // ->where('attendance', 'Present')
+                ->get();
+        return view('admin.monthly_attendance_report_employee', compact('data'));
     }
 }

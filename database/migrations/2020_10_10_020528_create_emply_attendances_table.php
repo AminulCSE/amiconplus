@@ -20,6 +20,7 @@ class CreateEmplyAttendancesTable extends Migration
             $table->string('att_year');
             $table->string('att_month');
             $table->string('attendance');
+            $table->string('overtime')->nullable();
             $table->string('edit_date')->nullable();
             $table->timestamps();
         });

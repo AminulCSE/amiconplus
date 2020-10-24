@@ -1,5 +1,96 @@
 @extends('layouts.appadmin')
 @section('content')
+        {{-- Top bar section --}}
+        <div class="row">
+          <div class="col-12 col-sm-6 col-md-3">
+            <div class="info-box">
+              <span class="info-box-icon bg-info elevation-1"><i class="fas fa-cart-arrow-down"></i></span>
+
+              <div class="info-box-content">
+                <span class="info-box-text">Today Sale</span>
+                <span class="info-box-number">
+                  @php $sum=0 @endphp
+
+                  @foreach($today_sale as $todaysaleval)
+                    @php
+                    $todaysaleamount = ($todaysaleval->quantity)*($todaysaleval->unit_price)-$todaysaleval->discount;
+                    $sum += $todaysaleamount;
+                    @endphp
+                  @endforeach
+
+                  {{ $sum }}
+
+                </span>
+              </div>
+              <!-- /.info-box-content -->
+            </div>
+            <!-- /.info-box -->
+          </div>
+          <!-- /.col -->
+          <div class="col-12 col-sm-6 col-md-3">
+            <div class="info-box mb-3">
+              <span class="info-box-icon bg-danger elevation-1"><i class="fas fa-shopping-cart"></i></span>
+
+              <div class="info-box-content">
+                
+                <span class="info-box-text">Total Sale</span>
+                @php $monthsale=0 @endphp
+                <span class="info-box-number">
+
+                  @foreach($total_sale as $totalsale)
+                    @php
+                    $total = ($totalsale->quantity)*($totalsale->unit_price)-$totalsale->discount;
+                    $monthsale += $total;
+                    @endphp
+                  @endforeach
+
+                  {{ $monthsale }}
+              </span>
+                
+              </div>
+              <!-- /.info-box-content -->
+            </div>
+            <!-- /.info-box -->
+          </div>
+          <!-- /.col -->
+
+          <!-- fix for small devices only -->
+          <div class="clearfix hidden-md-up"></div>
+
+          <div class="col-12 col-sm-6 col-md-3">
+            <div class="info-box mb-3">
+              <span class="info-box-icon bg-success elevation-1"><i class="fas fa-shopping-cart"></i></span>
+
+              <div class="info-box-content">
+                <span class="info-box-text">Pending Orders</span>
+                
+                <span class="info-box-number">
+                  {{ count($orderstatus) }}
+                </span>
+              </div>
+              <!-- /.info-box-content -->
+            </div>
+            <!-- /.info-box -->
+          </div>
+          <!-- /.col -->
+          <div class="col-12 col-sm-6 col-md-3">
+            <div class="info-box mb-3">
+              <span class="info-box-icon bg-warning elevation-1"><i class="fas fa-cart-arrow-down"></i></span>
+
+              <div class="info-box-content">
+                <span class="info-box-text">All Order</span>
+                <span class="info-box-number">{{ count($allorder) }}</span>
+              </div>
+              <!-- /.info-box-content -->
+            </div>
+            <!-- /.info-box -->
+          </div>
+          <!-- /.col -->
+        </div>
+        <!-- /.row -->
+
+
+
         <div class="row">
           <!-- Left col -->
           <div class="col-md-8">
@@ -20,81 +111,56 @@
               <!-- /.card-header -->
               <div class="card-body p-0">
                 <div class="table-responsive">
-                  <table class="table m-0">
-                    <thead>
-                    <tr>
-                      <th>Order ID</th>
-                      <th>Item</th>
-                      <th>Status</th>
-                      <th>Popularity</th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    <tr>
-                      <td><a href="pages/examples/invoice.html">OR9842</a></td>
-                      <td>Call of Duty IV</td>
-                      <td><span class="badge badge-success">Shipped</span></td>
-                      <td>
-                        <div class="sparkbar" data-color="#00a65a" data-height="20">90,80,90,-70,61,-83,63</div>
-                      </td>
-                    </tr>
-                    <tr>
-                      <td><a href="pages/examples/invoice.html">OR1848</a></td>
-                      <td>Samsung Smart TV</td>
-                      <td><span class="badge badge-warning">Pending</span></td>
-                      <td>
-                        <div class="sparkbar" data-color="#f39c12" data-height="20">90,80,-90,70,61,-83,68</div>
-                      </td>
-                    </tr>
-                    <tr>
-                      <td><a href="pages/examples/invoice.html">OR7429</a></td>
-                      <td>iPhone 6 Plus</td>
-                      <td><span class="badge badge-danger">Delivered</span></td>
-                      <td>
-                        <div class="sparkbar" data-color="#f56954" data-height="20">90,-80,90,70,-61,83,63</div>
-                      </td>
-                    </tr>
-                    <tr>
-                      <td><a href="pages/examples/invoice.html">OR7429</a></td>
-                      <td>Samsung Smart TV</td>
-                      <td><span class="badge badge-info">Processing</span></td>
-                      <td>
-                        <div class="sparkbar" data-color="#00c0ef" data-height="20">90,80,-90,70,-61,83,63</div>
-                      </td>
-                    </tr>
-                    <tr>
-                      <td><a href="pages/examples/invoice.html">OR1848</a></td>
-                      <td>Samsung Smart TV</td>
-                      <td><span class="badge badge-warning">Pending</span></td>
-                      <td>
-                        <div class="sparkbar" data-color="#f39c12" data-height="20">90,80,-90,70,61,-83,68</div>
-                      </td>
-                    </tr>
-                    <tr>
-                      <td><a href="pages/examples/invoice.html">OR7429</a></td>
-                      <td>iPhone 6 Plus</td>
-                      <td><span class="badge badge-danger">Delivered</span></td>
-                      <td>
-                        <div class="sparkbar" data-color="#f56954" data-height="20">90,-80,90,70,-61,83,63</div>
-                      </td>
-                    </tr>
-                    <tr>
-                      <td><a href="pages/examples/invoice.html">OR9842</a></td>
-                      <td>Call of Duty IV</td>
-                      <td><span class="badge badge-success">Shipped</span></td>
-                      <td>
-                        <div class="sparkbar" data-color="#00a65a" data-height="20">90,80,90,-70,61,-83,63</div>
-                      </td>
-                    </tr>
-                    </tbody>
-                  </table>
+       <table id="example1" class="table table-bordered table-striped">
+        <thead>
+        <tr>
+          <th>SL.</th>
+          <th>Customer Name</th>
+          <th>Order Details</th>
+          <th>Total Price</th>
+          <th>Delivary Date</th>
+          <th>Order Status</th>
+          <th>Action</th>
+        </tr>
+        </thead>
+        <tbody>
+    <?php $i=0; ?>
+    @foreach($all_order as $val)
+    <?php $i++; ?>
+        <tr>
+          <td>{{ $i }}</td>
+          <td>{{ $val->customer_name }}</td>
+          <td>{{ $val->order_description }}</td>
+          <td>
+            T: {{ $total_price = ($val->quantity)*($val->unit_price)-$val->discount }}<br>
+            <span class="text-primary">P: {{ $total_paid = $val->paid }}</span>
+            <br>
+            <span class="text-danger">D: {{ $due = $total_price-$val->paid }}</span>
+          </td>
+          <td>{{ $val->dalivary_date }}</td>
+          <td>
+            @if($val->order_status=='0')
+            <span class="badge bg-danger">Pending</span>
+            @else
+            <span class="badge bg-success">Delivered</span>
+            @endif
+          </td>
+          <td>
+            <a href="{{ URL::to('edit_order/'.$val->id) }}" style="padding: 4px;">
+              <i class="fas fa-edit"></i>
+            </a>
+          </td>
+        </tr>
+    @endforeach
+        </tbody>
+      </table>
+                  {{ $all_order->links() }}
                 </div>
                 <!-- /.table-responsive -->
               </div>
               <!-- /.card-body -->
               <div class="card-footer clearfix">
-                <a href="javascript:void(0)" class="btn btn-sm btn-info float-left">Place New Order</a>
-                <a href="javascript:void(0)" class="btn btn-sm btn-secondary float-right">View All Orders</a>
+                <a href="{{ url('all_order') }}" class="btn btn-sm btn-secondary float-right">View All Employee</a>
               </div>
               <!-- /.card-footer -->
             </div>
@@ -103,6 +169,7 @@
           <!-- /.col -->
 
           <div class="col-md-4">
+            <h2>Pending orders</h2>
             <!-- Info Boxes Style 2 -->
             <div class="info-box mb-3 bg-warning">
               <span class="info-box-icon"><i class="fas fa-tag"></i></span>

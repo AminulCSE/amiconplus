@@ -5,9 +5,10 @@
           <div class="col-md-1"></div>
           <div class="col-md-9">
             <!-- general form elements -->
-            <div class="card card-primary col-xs-1 center-block">
+            <div class="card card-default col-xs-1 center-block">
               <div class="card-header">
                 <h3 class="card-title">Edit Employee</h3>
+                <a href="{{ URL::to('all_employee') }}" class="float-sm-right btn btn-primary">All Employee</a>
               </div>
               @if ($errors->any())
                   <div class="alert alert-danger">
@@ -41,6 +42,11 @@
                   <div class="form-group">
                     <label for="exampleInputDesignation">Designation</label>
                     <input type="type" class="form-control" name="designation" id="exampleInputDesignation"value="{{ $data->designation }}">
+                  </div>
+
+                  <div class="form-group">
+                    <label for="exampleInputBasicSalary">Basic Salary</label>
+                    <input type="type" class="form-control" name="basic_salary" id="exampleInputBasicSalary"value="{{ $data->basic_salary }}">
                   </div>
 
                   <div class="form-group">

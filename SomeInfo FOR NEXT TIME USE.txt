@@ -1,0 +1,6 @@
+Number to word: https://github.com/hnhdigital-os/laravel-number-converter
+composer require kwn/number-to-words
+
+
+//For order table info
+name, date, address, product_details, unit_price, quantity, discount, total

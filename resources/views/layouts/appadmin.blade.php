@@ -59,6 +59,9 @@
         </a>
 
         <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+          <a class="dropdown-item bg-primary" href="#" style="font-weight: bold;">
+            {{ Auth::user()->name }}
+          </a>
           <a class="dropdown-item" href="#">
           <i class="fas fa-cog"></i>
           Setting</a>
@@ -68,9 +71,12 @@
           <a class="dropdown-item" href="#">
           <i class="fas fa-briefcase"></i>
           Profile</a>
-          <a class="dropdown-item" href="#">
-          <i class="fas fa-sign-out-alt"></i>
-          Logout</a>
+            <a class="dropdown-item" href="{{ route('logout') }}" onclick="event.preventDefault();document.getElementById('logout-form').submit();">
+                                      <i class="fas fa-sign-out-alt"></i> Logout
+            </a>
+            <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
+                @csrf
+            </form>
         </div>
       </li>
       <!-- Notifications Dropdown Menu -->
@@ -112,7 +118,7 @@
       <!-- Sidebar Menu -->
       <nav class="mt-2">
         <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
-          <li class="nav-item">
+          <li class="nav-item {{ Request::is('add_employee','all_employee','add_attendacne_employee') ? 'nav-item menu-is-opening menu-open' : '' }}">
             <a href="#" class="nav-link">
               <i class="nav-icon fas fa-copy"></i>
               <p>
@@ -122,114 +128,86 @@
             </a>
             <ul class="nav nav-treeview">
               <li class="nav-item">
-                <a href="{{ URL::to('add_employee') }}" class="nav-link">
+                <a href="{{ URL::to('add_employee') }}" class="{{ Request::is('add_employee') ? 'active nav-link' : 'nav-link' }}">
                   <i class="far fa-circle nav-icon"></i>
                   <p>Add Employee</p>
                 </a>
               </li>
               <li class="nav-item">
-                <a href="{{ URL::to('all_employee') }}" class="nav-link">
+                <a href="{{ URL::to('all_employee') }}" class="{{ Request::is('all_employee') ? 'active nav-link' : 'nav-link' }}">
                   <i class="far fa-circle nav-icon"></i>
                   <p>All Employee</p>
                 </a>
               </li>
 
               <li class="nav-item">
-                <a href="{{ URL::to('add_attendacne_employee') }}" class="nav-link">
+                <a href="{{ URL::to('add_attendacne_employee') }}" class="{{ Request::is('add_attendacne_employee') ? 'active nav-link' : 'nav-link' }}">
                   <i class="far fa-circle nav-icon"></i>
                   <p>Attendance Employee</p>
                 </a>
               </li>
             </ul>
           </li>
-          <li class="nav-item">
+
+
+          <li class="nav-item {{ Request::is('add_order','all_order','pending_order') ? 'nav-item menu-is-opening menu-open' : '' }}">
             <a href="#" class="nav-link">
               <i class="nav-icon fas fa-chart-pie"></i>
               <p>
-                Charts
+                Orders
                 <i class="right fas fa-angle-left"></i>
               </p>
             </a>
             <ul class="nav nav-treeview">
               <li class="nav-item">
-                <a href="pages/charts/chartjs.html" class="nav-link">
+                <a href="{{ url('add_order') }}" class="{{ Request::is('add_order') ? 'active nav-link' : 'nav-link' }}">
                   <i class="far fa-circle nav-icon"></i>
-                  <p>ChartJS</p>
+                  <p>Add Order</p>
                 </a>
               </li>
               <li class="nav-item">
-                <a href="pages/charts/flot.html" class="nav-link">
+                <a href="{{ URL::to('all_order') }}" class="{{ Request::is('all_order') ? 'active nav-link' : 'nav-link' }}">
                   <i class="far fa-circle nav-icon"></i>
-                  <p>Flot</p>
+                  <p>All Order</p>
                 </a>
               </li>
+
               <li class="nav-item">
-                <a href="pages/charts/inline.html" class="nav-link">
+                <a href="{{ URL::to('pending_order') }}" class="{{ Request::is('pending_order') ? 'active nav-link' : 'nav-link' }}">
                   <i class="far fa-circle nav-icon"></i>
-                  <p>Inline</p>
+                  <p class="text-warning">Pending Orders</p>
                 </a>
               </li>
             </ul>
           </li>
-          <li class="nav-item">
+
+
+
+          <li class="nav-item {{ Request::is('add_customer','all_customer') ? 'nav-item menu-is-opening menu-open' : '' }}">
             <a href="#" class="nav-link">
               <i class="nav-icon fas fa-tree"></i>
               <p>
-                UI Elements
+                Customers
                 <i class="fas fa-angle-left right"></i>
               </p>
             </a>
             <ul class="nav nav-treeview">
               <li class="nav-item">
-                <a href="pages/UI/general.html" class="nav-link">
+                <a href="{{ url('add_customer') }}" class="{{ Request::is('add_customer') ? 'active nav-link' : 'nav-link' }}">
                   <i class="far fa-circle nav-icon"></i>
-                  <p>General</p>
+                  <p>Add Customer</p>
                 </a>
               </li>
               <li class="nav-item">
-                <a href="pages/UI/icons.html" class="nav-link">
+                <a href="{{ url('all_customer') }}" class="{{ Request::is('all_customer') ? 'active nav-link' : 'nav-link' }}">
                   <i class="far fa-circle nav-icon"></i>
-                  <p>Icons</p>
-                </a>
-              </li>
-              <li class="nav-item">
-                <a href="pages/UI/buttons.html" class="nav-link">
-                  <i class="far fa-circle nav-icon"></i>
-                  <p>Buttons</p>
-                </a>
-              </li>
-              <li class="nav-item">
-                <a href="pages/UI/sliders.html" class="nav-link">
-                  <i class="far fa-circle nav-icon"></i>
-                  <p>Sliders</p>
-                </a>
-              </li>
-              <li class="nav-item">
-                <a href="pages/UI/modals.html" class="nav-link">
-                  <i class="far fa-circle nav-icon"></i>
-                  <p>Modals & Alerts</p>
-                </a>
-              </li>
-              <li class="nav-item">
-                <a href="pages/UI/navbar.html" class="nav-link">
-                  <i class="far fa-circle nav-icon"></i>
-                  <p>Navbar & Tabs</p>
-                </a>
-              </li>
-              <li class="nav-item">
-                <a href="pages/UI/timeline.html" class="nav-link">
-                  <i class="far fa-circle nav-icon"></i>
-                  <p>Timeline</p>
-                </a>
-              </li>
-              <li class="nav-item">
-                <a href="pages/UI/ribbons.html" class="nav-link">
-                  <i class="far fa-circle nav-icon"></i>
-                  <p>Ribbons</p>
+                  <p>All Customer</p>
                 </a>
               </li>
             </ul>
           </li>
+
+
           <li class="nav-item">
             <a href="#" class="nav-link">
               <i class="nav-icon fas fa-edit"></i>
@@ -682,71 +660,8 @@
     <section class="content">
       <div class="container-fluid">
         <!-- Info boxes -->
-        <div class="row">
-          <div class="col-12 col-sm-6 col-md-3">
-            <div class="info-box">
-              <span class="info-box-icon bg-info elevation-1"><i class="fas fa-cog"></i></span>
-
-              <div class="info-box-content">
-                <span class="info-box-text">CPU Traffic</span>
-                <span class="info-box-number">
-                  10
-                  <small>%</small>
-                </span>
-              </div>
-              <!-- /.info-box-content -->
-            </div>
-            <!-- /.info-box -->
-          </div>
-          <!-- /.col -->
-          <div class="col-12 col-sm-6 col-md-3">
-            <div class="info-box mb-3">
-              <span class="info-box-icon bg-danger elevation-1"><i class="fas fa-thumbs-up"></i></span>
-
-              <div class="info-box-content">
-                <span class="info-box-text">Likes</span>
-                <span class="info-box-number">41,410</span>
-              </div>
-              <!-- /.info-box-content -->
-            </div>
-            <!-- /.info-box -->
-          </div>
-          <!-- /.col -->
-
-          <!-- fix for small devices only -->
-          <div class="clearfix hidden-md-up"></div>
-
-          <div class="col-12 col-sm-6 col-md-3">
-            <div class="info-box mb-3">
-              <span class="info-box-icon bg-success elevation-1"><i class="fas fa-shopping-cart"></i></span>
-
-              <div class="info-box-content">
-                <span class="info-box-text">Sales</span>
-                <span class="info-box-number">760</span>
-              </div>
-              <!-- /.info-box-content -->
-            </div>
-            <!-- /.info-box -->
-          </div>
-          <!-- /.col -->
-          <div class="col-12 col-sm-6 col-md-3">
-            <div class="info-box mb-3">
-              <span class="info-box-icon bg-warning elevation-1"><i class="fas fa-users"></i></span>
-
-              <div class="info-box-content">
-                <span class="info-box-text">New Members</span>
-                <span class="info-box-number">2,000</span>
-              </div>
-              <!-- /.info-box-content -->
-            </div>
-            <!-- /.info-box -->
-          </div>
-          <!-- /.col -->
-        </div>
-        <!-- /.row -->
-
-        <!------------------------------- Main row ------------------------->
-        @yield('content')
+        <!----------------------------------------- Main row  Yield------------------------------------->
+@yield('content')
         <!-- /.row -->
       </div><!--/. container-fluid -->
     </section>
