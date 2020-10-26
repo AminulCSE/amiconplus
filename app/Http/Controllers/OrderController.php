@@ -39,8 +39,8 @@ class OrderController extends Controller
 	        'unit_price' 		=> 'required|max:255',
 	        'discount' 			=> 'max:255',
 	        'paid' 				=> 'max:255',
-	        'dalivary_date' 	=> 'max:255'
-	        'order_month' 		=> 'max:255'
+	        'dalivary_date' 	=> 'max:255',
+	        'order_month' 		=> 'max:255',
 	        'order_year' 		=> 'max:255'
     	]);
 

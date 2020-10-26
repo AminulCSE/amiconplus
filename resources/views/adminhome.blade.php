@@ -13,7 +13,7 @@
 
                   @foreach($today_sale as $todaysaleval)
                     @php
-                    $todaysaleamount = ($todaysaleval->quantity)*($todaysaleval->unit_price)-$todaysaleval->discount;
+                    $todaysaleamount = ($todaysaleval->quantity)*($todaysaleval->price)-$todaysaleval->discount;
                     $sum += $todaysaleamount;
                     @endphp
                   @endforeach
@@ -39,7 +39,7 @@
 
                   @foreach($total_sale as $totalsale)
                     @php
-                    $total = ($totalsale->quantity)*($totalsale->unit_price)-$totalsale->discount;
+                    $total = ($totalsale->quantity)*($totalsale->price)-$totalsale->discount;
                     $monthsale += $total;
                     @endphp
                   @endforeach
@@ -130,9 +130,9 @@
         <tr>
           <td>{{ $i }}</td>
           <td>{{ $val->customer_name }}</td>
-          <td>{{ $val->order_description }}</td>
+          <td>{{ $val->name }}</td>
           <td>
-            T: {{ $total_price = ($val->quantity)*($val->unit_price)-$val->discount }}<br>
+            T: {{ $total_price = ($val->quantity)*($val->price)-$val->discount }}<br>
             <span class="text-primary">P: {{ $total_paid = $val->paid }}</span>
             <br>
             <span class="text-danger">D: {{ $due = $total_price-$val->paid }}</span>
